@@ -1,4 +1,3 @@
-# api/index.py
 import random
 import re
 import urllib.parse
@@ -29,27 +28,26 @@ class Downloader:
             videos = []
 
             for element in soup.select("div.thumb-block"):
-                title = element.select_one(".thumb-under a").get("title", "")
-                link = "https://www.xnxx.com" + element.select_one(".thumb-under a").get("href", "")
-                thumbnail = element.select_one(".thumb img").get("src", "")
+                title = element.select_one(".thumb-under a")
+                link = element.select_one(".thumb-under a")
+                thumbnail = element.select_one(".thumb img")
                 uploader = element.select_one(".uploader a span")
                 views = element.select_one(".metadata .right")
                 duration = element.select_one(".metadata")
 
                 video = {
-                    "title": title,
-                    "link": link,
-                    "thumbnail": thumbnail,
+                    "title": title.get("title") if title else "",
+                    "link": "https://www.xnxx.com" + link.get("href") if link else "",
+                    "thumbnail": thumbnail.get("src") if thumbnail else "",
                     "uploader": uploader.text if uploader else "",
                     "views": views.text.strip().split(" ")[0] if views else "0",
                     "duration": duration.text.strip().split("\n")[1] if duration else "N/A"
                 }
 
-                if "undefined" not in video["link"]:
+                if video["link"] and "undefined" not in video["link"]:
                     videos.append(video)
 
             return videos
-
         except Exception as e:
             raise Exception(f"Error fetching search: {str(e)}")
 
@@ -94,7 +92,6 @@ class Downloader:
                 "info": info.text.strip() if info else "",
                 "files": files
             }
-
         except Exception as e:
             raise Exception(f"Error fetching detail: {str(e)}")
 
