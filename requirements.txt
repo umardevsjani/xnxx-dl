@@ -1,4 +1,3 @@
 fastapi
 httpx
 beautifulsoup4
-uvicorn
