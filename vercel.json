@@ -1,18 +1,15 @@
 {
   "version": 2,
-  "framework": null,
   "builds": [
     {
-      "src": "app.py",
-      "use": "@vercel/python",
-      "config": { "maxLambdaSize": "50mb" }
+      "src": "api/index.py",
+      "use": "@vercel/python"
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
-      "dest": "app.py",
-      "methods": ["GET", "POST"]
+      "src": "/api/(.*)",
+      "dest": "api/index.py"
     }
   ]
 }
